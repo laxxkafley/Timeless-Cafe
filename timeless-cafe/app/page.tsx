@@ -1,101 +1,201 @@
 
 
+// import PaintingModel from "@/components/paintings";
+// import prisma from "@/utils/db";
+// import { revalidatePath } from "next/cache";
+// import preExistingData from "../preExistingData";
+
+// export default async function Home() {
+//   // Function to initialize paintings only if there are no paintings in the database
+//   async function initializePaintings() {
+//     "use server"; // Mark as server-side
+
+//     // Predefined painting data to add to the database
+//     // const preExistingData = [
+//     //   {
+//     //     title: "Starry Night",
+//     //     description: "A mesmerizing display of swirling skies, vibrant stars, and a tranquil village, Vincent van Gogh's *Starry Night* ",
+//     //     image: "https://images.squarespace-cdn.com/content/v1/5fab2701e889c67ee31bfa4d/1614038505601-5HQPI763HMNFWJZ016EQ/SL03+LR.jpg?format=1000w",
+//     //   },
+//     //   {
+//     //     title: "Mona Lisa",
+//     //     description: "One of the most famous portraits in art history, *Mona Lisa* by Leonardo da Vinci features the enigmatic smile of its subject.",
+//     //     image: "https://img.freepik.com/premium-photo/perks-brewing-unveiling-charms-coffee-shop_1000124-46738.jpg",
+//     //   },
+//     //   {
+//     //     title: "The Persistence of Memory",
+//     //     description: "Salvador Dalí’s surreal masterpiece, *The Persistence of Memory*, explores the fluidity of time and perception.",
+//     //     image: "https://www.mayfairgallery.com/media/wysiwyg/paintings_main_image.jpg",
+//     //   },
+//     //   {
+//     //     title: "Man",
+//     //     description: "*Man* is a powerful exploration of the human form and the complex emotions that define our existence. ",
+//     //     image: "https://museumqualityart.com/cdn/shop/products/SleepingFox_WebRes_20x16_MuseumQualityArt.jpg?v=1651930660&width=320",
+//     //   },
+//     //   {
+//     //     title: "Man",
+//     //     description: "*Man* is a powerful exploration of the human form and the complex emotions that define our existence. ",
+//     //     image: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/436535/796067/main-image",
+//     //   },
+//     //   {
+//     //     title: "Man",
+//     //     description: "*Man* is a powerful exploration of the human form and the complex emotions that define our existence. ",
+//     //     image: "https://i.ebayimg.com/images/g/yAMAAOSwrbRkF8G8/s-l1200.jpg",
+//     //   },
+//     // ];
+
+//     // Check if there are any paintings in the database
+//     const existingPaintings = await prisma.paintings.findMany();
+//     if (existingPaintings.length === 0) {
+//       // If no paintings, add the predefined data
+//       await prisma.paintings.createMany({ data: preExistingData });
+//       console.log("Paintings initialized");
+//     } else {
+//       console.log("Paintings already exist in the database.");
+//     }
+
+//     // Re-fetch paintings after initialization or check
+//     const updatedData = await prisma.paintings.findMany();
+//     return updatedData;
+//   }
+
+//   // Fetch paintings from the database (initializing if necessary)
+//   const data = await initializePaintings();
+//   console.log("Fetched paintings:", data);
+
+//   // Function to delete a painting
+//   async function deletePainting(id: string) {
+//     "use server";
+//     try {
+//       await prisma.paintings.delete({ where: { id } });
+//       revalidatePath("/"); // Revalidate path to refresh the data on the page
+//     } catch (error) {
+//       console.error("Error deleting painting:", error);
+//       // Handle error, e.g., show a message to the user
+//     }
+//   }
+
+//   return (
+//     <>
+//   <div className="bg-white-50 text-3xl font-semibold text-center text-blue-300 py-3">
+//   Featured Paintings
+// </div>
+
+//       <div className=" bg-white-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+     
+//         {data.map((item) => (
+//           <PaintingModel
+//             key={item.id} // Use unique `id` instead of `index`
+//             id={item.id}
+//             title={item.title}
+//             image={item.image}
+//             description={item.description}
+//             deletePainting={deletePainting}
+//           />
+//         ))}
+//       </div>
+//     </>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import PaintingModel from "@/components/paintings";
 import prisma from "@/utils/db";
 import { revalidatePath } from "next/cache";
+import preExistingData from "../preExistingData";
+import Link from 'next/link'; // Import Link component
 
 export default async function Home() {
-  // Function to initialize paintings only if there are no paintings in the database
   async function initializePaintings() {
-    "use server"; // Mark as server-side
+    "use server"; // Server-side function
 
-    // Predefined painting data to add to the database
-    const preExistingData = [
-      {
-        title: "Starry Night",
-        description: "A mesmerizing display of swirling skies, vibrant stars, and a tranquil village, Vincent van Gogh's *Starry Night* ",
-        image: "https://images.squarespace-cdn.com/content/v1/5fab2701e889c67ee31bfa4d/1614038505601-5HQPI763HMNFWJZ016EQ/SL03+LR.jpg?format=1000w",
-      },
-      {
-        title: "Mona Lisa",
-        description: "One of the most famous portraits in art history, *Mona Lisa* by Leonardo da Vinci features the enigmatic smile of its subject.",
-        image: "https://img.freepik.com/premium-photo/perks-brewing-unveiling-charms-coffee-shop_1000124-46738.jpg",
-      },
-      {
-        title: "The Persistence of Memory",
-        description: "Salvador Dalí’s surreal masterpiece, *The Persistence of Memory*, explores the fluidity of time and perception.",
-        image: "https://www.mayfairgallery.com/media/wysiwyg/paintings_main_image.jpg",
-      },
-      {
-        title: "Man",
-        description: "*Man* is a powerful exploration of the human form and the complex emotions that define our existence. ",
-        image: "https://museumqualityart.com/cdn/shop/products/SleepingFox_WebRes_20x16_MuseumQualityArt.jpg?v=1651930660&width=320",
-      },
-      {
-        title: "Man",
-        description: "*Man* is a powerful exploration of the human form and the complex emotions that define our existence. ",
-        image: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/436535/796067/main-image",
-      },
-      {
-        title: "Man",
-        description: "*Man* is a powerful exploration of the human form and the complex emotions that define our existence. ",
-        image: "https://i.ebayimg.com/images/g/yAMAAOSwrbRkF8G8/s-l1200.jpg",
-      },
-    ];
+    try {
+      // Check if paintings already exist
+      const existingPaintings = await prisma.paintings.findMany();
 
-    // Check if there are any paintings in the database
-    const existingPaintings = await prisma.paintings.findMany();
-    if (existingPaintings.length === 0) {
-      // If no paintings, add the predefined data
-      await prisma.paintings.createMany({ data: preExistingData });
-      console.log("Paintings initialized");
-    } else {
-      console.log("Paintings already exist in the database.");
+      if (existingPaintings.length === 0) {
+        // Add predefined paintings if none exist
+        await prisma.paintings.createMany({ data: preExistingData });
+        console.log("Paintings initialized");
+      } else {
+        console.log("Paintings already exist in the database.");
+      }
+
+      // Return updated paintings
+      return prisma.paintings.findMany();
+    } catch (error) {
+      console.error("Error initializing paintings:", error);
+      return [];
     }
-
-    // Re-fetch paintings after initialization or check
-    const updatedData = await prisma.paintings.findMany();
-    return updatedData;
   }
 
-  // Fetch paintings from the database (initializing if necessary)
-  const data = await initializePaintings();
-  console.log("Fetched paintings:", data);
+  const paintings = await initializePaintings();
 
-  // Function to delete a painting
   async function deletePainting(id: string) {
     "use server";
     try {
       await prisma.paintings.delete({ where: { id } });
-      revalidatePath("/"); // Revalidate path to refresh the data on the page
+      revalidatePath("/");
     } catch (error) {
       console.error("Error deleting painting:", error);
-      // Handle error, e.g., show a message to the user
     }
   }
 
   return (
-    <>
-  <div className="bg-blue-50 text-3xl font-semibold text-center text-blue-300 py-3">
-  Featured Paintings
+    <div>
+      <h1 className="bg-white text-3xl font-semibold text-center text-blue-300 py-3">
+        Featured Paintings
+      </h1>
+      <div className="bg-white-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ">
+  {paintings.map((painting) => (
+    <div key={painting.id}>
+      {/* Wrap title in Link to detail page */}
+      
+      <PaintingModel
+        id={painting.id}
+        title={painting.title}
+        image={painting.image}
+        description={painting.description}
+        deletePainting={deletePainting}
+      />
+      <Link href={`/param/${encodeURIComponent(painting.title)}`}>
+        <h2 className="text-xl border-2 text-center font-bold text-blue-500 cursor-pointer">
+          See more
+        </h2>
+      </Link>
+    </div>
+  ))}
 </div>
 
-      <div className=" bg-blue-50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-     
-        {data.map((item) => (
-          <PaintingModel
-            key={item.id} // Use unique `id` instead of `index`
-            id={item.id}
-            title={item.title}
-            image={item.image}
-            description={item.description}
-            deletePainting={deletePainting}
-          />
-        ))}
-      </div>
-    </>
+    </div>
   );
 }
+
+
 // import PaintingModel from "@/components/paintings";
 // import prisma from "@/utils/db";
 // import { revalidatePath } from "next/cache";
