@@ -27,3 +27,10 @@ model User {
   password  String   // Password for user authentication
   createdAt DateTime @default(now()) // Timestamp when the user was created
 }
+model Poem {
+  id      Int      @id @default(autoincrement())
+  title   String
+  content String
+  author String
+  createdAt DateTime @default(now())
+}

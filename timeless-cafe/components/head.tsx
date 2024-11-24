@@ -26,7 +26,7 @@ export default function Nav() {
               <Link href="/musicstore" className="text-gray-700 hover:text-purple-800">
                 Coffee Brew
               </Link>
-              <Link href="/fetchClient" className="text-gray-700 hover:text-purple-800">
+              <Link href="/Poems" className="text-gray-700 hover:text-purple-800">
                 Poetry
               </Link>
               <Link href="/Register" className="text-gray-700 hover:text-purple-800">

@@ -19,6 +19,7 @@ export default function Login() {
     redirect("/")
   }
 
+
   return (
     <div className="max-w-md mt-20 mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h2 className=" text-purple-600 text-2xl font-semibold text-center mb-6">Login</h2>
