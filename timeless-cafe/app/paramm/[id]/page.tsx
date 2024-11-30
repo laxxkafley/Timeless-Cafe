@@ -52,7 +52,7 @@ export default async function PoemDetail({ params }: { params: { id: string } })
       </div>
 
       <button className="mt-4 p-2 bg-red-500 rounded text-white">
-        <a href="/poems">Go Back</a>
+        <a href="/Poems">Go Back</a>
       </button>
     </div>
   );

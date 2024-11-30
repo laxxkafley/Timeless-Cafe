@@ -52,18 +52,50 @@
 
 
 'use client';
+import { getSession } from "@/utils/loginUser";
+import logout from "./logout"
+
 import Link from "next/link";
-import React, { useState } from 'react';
+
+import { useEffect, useState } from "react"
+import { redirect } from "next/dist/server/api-utils";
+import { revalidatePath } from "next/cache";
 
 export default function Nav() {
+  const[user, setUser]=useState<{name: String} | null>()
+
+  
+  useEffect(() => {
+    const getUser = async () => {
+      const user1 = await getSession(); // Fetch session
+      console.log("Fetched user from session:", user1); // Log fetched user data
+      setUser(user1);
+      
+       // Update the user state
+       
+    };
+    getUser();
+    
+  }, []);
+ 
+  const handleLogout = () => {
+    setUser(null); 
+   // Clear user state
+};
+
+  console.log("Current user state:", user); // Log user state
+  
+
   const [isOpen, setIsOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const handleClick = () => {
     setIsOpen(!isOpen);
   };
+  
 
   return (
-    <header className="bg-blue-200 text-white shadow-md">
+    <header className="bg-blue-200 text-black shadow-md">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
@@ -88,6 +120,34 @@ export default function Nav() {
               Account
             </Link>
           </div>
+          <div>
+          {
+  user ? (
+    <>
+      Hello: {user.name} |{" "}
+      <button
+      className="ml-2 px-3 py-2 text-sm font-medium text-black bg-red-500 rounded-md hover:bg-red-600"
+      onClick={() => {
+        handleLogout();
+        setRefresh(!refresh); // Trigger a re-render by toggling state
+      }}
+    >
+      Logout
+    </button>
+    </>
+  ) : (
+    <>
+      <Link className="btn-outline" href="/login">
+      Login
+      </Link>
+    
+      <Link className="btn-primary" href="Register">
+        Register
+      </Link>
+    </>
+  )
+}
+          </div>
 
           {/* Mobile Hamburger Button */}
           <button 
@@ -103,18 +163,24 @@ export default function Nav() {
         {/* Mobile Menu */}
         {isOpen && (
           <div className="lg:hidden flex flex-col space-y-4 bg-purple-700 p-4 rounded-lg">
-            <Link href="/" className="text-white hover:text-purple-300">
+            <Link href="/" className="text-black hover:text-purple-300">
               Home
             </Link>
-            <Link href="/Coffee" className="text-white hover:text-purple-300">
+            <Link href="/Coffee" className="text-black hover:text-purple-300">
               Coffee Brew
-            </Link>
-            <Link href="/Poems" className="text-white hover:text-purple-300">
+            </Link> 
+            <Link href="/Poems" className="text-black hover:text-purple-300">
               Poetry
             </Link>
-            <Link href="/Register" className="text-white hover:text-purple-300">
+            <Link href="/Register" className="text-black hover:text-purple-300">
               Account
             </Link>
+           <div className="text-purple-900">
+
+           
+
+           </div>
+
           </div>
         )}
       </nav>
