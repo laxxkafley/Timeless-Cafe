@@ -15,3 +15,4 @@ export default function Logout({ handleLogout }: { handleLogout: Function }) {
     </button>
   );
 }
+

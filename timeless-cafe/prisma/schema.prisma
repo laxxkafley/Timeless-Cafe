@@ -11,26 +11,45 @@ datasource db {
 }
 
 model Paintings {
-  id        String   @id @default(uuid())
-  image     String
-  title     String
-  description  String
- 
+  id          String   @id @default(uuid())
+  image       String
+  title       String
+  description String
 }
 
 
 
 model User {
-  id        Int      @id @default(autoincrement()) // Auto-incrementing user ID
-  name     String
-  email     String   @unique // Email must be unique
-  password  String   // Password for user authentication
-  createdAt DateTime @default(now()) // Timestamp when the user was created
-}
-model Poem {
-  id      Int      @id @default(autoincrement())
-  title   String
-  content String
-  author String
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String?  // Make role nullable temporarily
   createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt // Make updatedAt nullable temporarily
+  comments  Comment[]
+}
+
+
+
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  comment   String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  poemId    Int?     // Make poemId optional temporarily
+  poem      Poem?    @relation(fields: [poemId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Poem {
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String
+  author    String
+  comments  Comment[] // Relation to comments
+  createdAt DateTime  @default(now())
 }

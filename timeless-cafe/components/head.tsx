@@ -73,8 +73,8 @@ export default function Nav() {
       
        // Update the user state
        
-    };
-    getUser();
+    }
+    getUser()
     
   }, []);
  
@@ -122,7 +122,7 @@ export default function Nav() {
           </div>
           <div>
           {
-  user ? (
+  user  ? (
     <>
       Hello: {user.name} |{" "}
       <button
@@ -187,3 +187,4 @@ export default function Nav() {
     </header>
   );
 }
+

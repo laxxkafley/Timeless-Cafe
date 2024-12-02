@@ -1,7 +1,103 @@
-import prisma from "@/utils/db";
-import Link from "next/link";
+// // // import prisma from "@/utils/db";
+// // import { revalidatePath } from "next/cache";
+// // import PoemModel from "@/components/poem"; 
+// // import prisma from "@/utils/db";// Import PoemModel component
+// // import "@/global.css"
+
+// // export default async function PoemsPage() {
+// //   const poems = await prisma.poem.findMany(); // Fetch all poems from the database
+
+// //   // Function to delete poem
+// //   const deletePoem = async (id: string) => {
+// //     "use server"; // Marks the function as a server-side function
+// //     await prisma.poem.delete({ where: { id } });
+// //     revalidatePath("/"); // Refresh the page after deletion
+// //   };
+
+// //   return (
+// //     <div className="bg-gray-100">
+// //       <h1 className="text-4xl font-extrabold text-center text-blue-300 mb-8 mt-4">
+// //         Poems Collection
+// //       </h1>
+// //       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+// //         {poems.map((poem) => (
+// //           <PoemModel
+// //             key={poem.id}
+// //             id={poem.id}
+// //             title={poem.title}
+// //             author={poem.author}
+// //             content={poem.content}
+// //             deletePoem={deletePoem} // Pass deletePoem function to PoemModel
+// //           />
+// //         ))}
+// //       </div>
+// //     </div>
+// //   );
+// // }
+
+
+
+// import { getSession } from "@/utils/loginUser"; // Assuming you have this function to get session details
+// import { revalidatePath } from "next/cache";
+// import PoemModel from "@/components/poem"; 
+// import prisma from "@/utils/db";// Import PoemModel component
+// import "@/global.css"
+
+// export default async function PoemsPage() {
+//   const poems = await prisma.poem.findMany(); // Fetch all poems from the database
+
+//   // Get session data to check if the user is an admin
+//   const session = await getSession(); // Fetch session (you need this function to return the current user's session)
+//   const isAdmin = session?.role === "admin"; // Check if the user is an admin
+
+//   // Function to delete poem
+//   const deletePoem = async (id: string) => {
+//     "use server"; // Marks the function as a server-side function
+//     await prisma.poem.delete({ where: { id } });
+//     revalidatePath("/"); // Refresh the page after deletion
+//   };
+
+//   return (
+//     <div className="bg-gray-100">
+//       <h1 className="text-4xl font-extrabold text-center text-blue-300 mb-8 mt-4">
+//         Poems Collection
+//       </h1>
+//       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+//         {poems.map((poem) => (
+//           <PoemModel
+//             key={poem.id}
+//             id={poem.id}
+//             title={poem.title}
+//             author={poem.author}
+//             content={poem.content}
+//             deletePoem={deletePoem} // Pass deletePoem function to PoemModel
+//             isAdmin={isAdmin} // Pass isAdmin to PoemModel
+//           />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+import { getSession } from "@/utils/loginUser"; // Adjust the import path based on your project structure
+import { revalidatePath } from "next/cache";
+import PoemModel from "@/components/poem"; 
+import prisma from "@/utils/db"; // Import PoemModel component
+import "@/global.css";
+
 export default async function PoemsPage() {
   const poems = await prisma.poem.findMany(); // Fetch all poems from the database
+
+  // Get session data to check if the user is an admin
+  const session = await getSession(); // Fetch session (you need this function to return the current user's session)
+  const isAdmin = session?.role === "admin"; // Check if the user is an admin
+
+  // Function to delete poem
+  const deletePoem = async (id: string) => {
+    "use server"; // Marks the function as a server-side function
+    await prisma.poem.delete({ where: { id } });
+    revalidatePath("/"); // Refresh the page after deletion
+  };
 
   return (
     <div className="bg-gray-100">
@@ -10,23 +106,15 @@ export default async function PoemsPage() {
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {poems.map((poem) => (
-          <div
+          <PoemModel
             key={poem.id}
-            className="bg-white shadow-lg rounded-xl p-6 hover:scale-105 hover:shadow-xl transition-transform duration-300 ease-in-out"
-          >
-            <h2 className="text-2xl font-semibold text-indigo-600 mb-3">
-              {poem.title}
-            </h2>
-            <p className="text-sm text-gray-600 mb-3 italic">By {poem.author}</p>
-            <p className="text-gray-800 text-base line-clamp-4">
-              {poem.content}
-            </p>
-            <Link href={`/paramm/${poem.id}`}>
-        <h2 className="text-xl border-2 text-center font-bold text-blue-500 cursor-pointer mt-4">
-          See more
-        </h2>
-      </Link>
-          </div>
+            id={poem.id}
+            title={poem.title}
+            author={poem.author}
+            content={poem.content}
+            deletePoem={deletePoem} // Pass deletePoem function to PoemModel
+            isAdmin={isAdmin} // Pass isAdmin to PoemModel
+          />
         ))}
       </div>
     </div>
