@@ -309,6 +309,25 @@ import poem from "@/components/poem";
 export default async function PoemsPage() {
   const poems = await prisma.poem.findMany(); // Fetch all poems from the database
 
+  async function addPoem(formData: FormData) {
+    "use server";
+
+    const title = formData.get("title") as string;
+    const content = formData.get("content") as string;
+    const author = formData.get("author") as string;
+
+    if (!title || !content) {
+      throw new Error("Title and content are required.");
+    }
+
+    await prisma.poem.create({
+      data: { title, content, author },
+    });
+
+    revalidatePath("/"); // Refresh the page after the addition
+  }
+
+
   // Get session data to check if the user is an admin
   const session = await getSession(); // Fetch session (you need this function to return the current user's session)
   const isAdmin = session?.role === "admin"; // Check if the user is an admin
@@ -325,9 +344,7 @@ export default async function PoemsPage() {
   <h1 className="text-4xl font-extrabold text-center text-blue-300 mb-8 mt-4">
     Poems Collection
   </h1>
-
-  
-      
+ 
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
  
@@ -347,6 +364,42 @@ export default async function PoemsPage() {
       </PoemModel>
     ))}
   </div>
+  {isAdmin && (
+  <form action={addPoem} className="space-y-4">
+            <div>
+              <input
+                className="w-full p-3 border-2 border-purple-300 rounded-lg focus:outline-none"
+                type="text"
+                name="title"
+                placeholder="Title"
+                required
+              />
+            </div>
+            <div>
+              <textarea
+                className="w-full p-3 border-2 border-purple-300 rounded-lg"
+                name="content"
+                placeholder="Content"
+                rows={4}
+                required
+              ></textarea>
+            </div>
+            <div>
+              <input
+                className="w-full p-3 border-2 border-purple-300 rounded-lg"
+                type="text"
+                name="author"
+                placeholder="Author"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full py-3 bg-purple-950 text-white font-bold rounded-lg hover:bg-blue-900 transition-colors"
+            >
+              Add Poem
+            </button>
+          </form>
+  )}
 </div>
 
   );
