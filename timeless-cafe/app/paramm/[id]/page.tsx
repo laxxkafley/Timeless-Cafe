@@ -46,7 +46,10 @@
 //     </div>
 //   );
 // }
-// Import necessary modules
+
+
+//Import necessary modules
+import "@/global.css"
 import { PrismaClient } from "@prisma/client";
 import { getSession } from "@/utils/loginUser"; // Import session management
 import CommentForm from "@/app/commentForm/page";// Adjust the path as necessary
@@ -110,3 +113,99 @@ export default async function PoemDetail({ params }: { params: { id: string } })
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import "@/global.css"
+// import { PrismaClient } from "@prisma/client";
+// import { getSession } from "@/utils/loginUser"; // Adjust the path as necessary
+// import CommentForm from "@/app/commentForm/page"; // Adjust the path as necessary
+// import Link from "next/link"; // For navigation
+
+// const prisma = new PrismaClient();
+
+// export default async function PoemDetail({
+//   params,
+// }: {
+//   params: { id: string };
+// }) {
+//   // Ensure params is awaited before accessing properties
+//   const { id } = await params;
+
+//   // Fetch the poem based on the ID
+//   const poem = await prisma.poem.findUnique({
+//     where: { id: parseInt(id) },
+//   });
+
+//   if (!poem) {
+//     return (
+//       <div className="bg-red-50 m-6 p-6 text-red-900 rounded shadow-md">
+//         <h1 className="text-2xl font-bold text-center">Poem Not Found</h1>
+//         <Link href="/poems">
+//           <button className="mt-4 p-2 bg-red-500 rounded text-white hover:bg-red-600 block mx-auto">
+//             Go Back
+//           </button>
+//         </Link>
+//       </div>
+//     );
+//   }
+
+//   // Split poem content by lines to display them properly
+//   const poemLines = poem.content.split("\n");
+
+//   return (
+//     <div className="bg-gray-100 p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+//       <h1 className="text-4xl font-bold text-center text-gray-800 mb-4">
+//         {poem.title}
+//       </h1>
+//       <h2 className="text-xl italic text-center text-gray-600 mb-6">
+//         By {poem.author}
+//       </h2>
+
+//       {/* Poem content displayed line by line */}
+//       <div className="bg-white p-24 rounded-md shadow-inner border-gray-300 border">
+//         {poemLines.map((line, index) => (
+//           <p
+//             key={index}
+//             className="text-lg text-gray-700 leading-relaxed text-center"
+//           >
+//             {line || <br />} {/* Render empty lines as blank space */}
+//           </p>
+//         ))}
+//       </div>
+
+//       <div className="mt-6 text-center">
+//         <Link href="/poems">
+//           <button className="p-3 bg-blue-500 rounded-md text-white hover:bg-blue-600">
+//             Go Back
+//           </button>
+//         </Link>
+//       </div>
+
+//       {/* Conditionally render the comment form */}
+//       <div className="mt-10">
+//         <CommentForm poemId={parseInt(id)} />
+//       </div>
+//     </div>
+//   );
+// }
